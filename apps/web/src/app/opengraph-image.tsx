@@ -1,4 +1,5 @@
 import { ImageResponse } from 'next/og';
+import { brandMarkDataUri } from '@/lib/brand';
 import { site } from '@/lib/site';
 
 export const alt = `${site.name} · ${site.tagline}`;
@@ -44,22 +45,8 @@ export default function OpengraphImage() {
         }}
       />
       <div style={{ display: 'flex', alignItems: 'center', gap: 20 }}>
-        <div
-          style={{
-            width: 72,
-            height: 72,
-            borderRadius: 20,
-            background: 'linear-gradient(135deg, #fb923c, #22d3ee)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            color: '#0a0b14',
-            fontSize: 34,
-            fontWeight: 800,
-          }}
-        >
-          {'</>'}
-        </div>
+        {/* oxlint-disable-next-line nextjs/no-img-element -- ImageResponse no admite next/image */}
+        <img src={brandMarkDataUri()} width={84} height={84} alt="" />
         <div style={{ display: 'flex', fontSize: 40, fontWeight: 700 }}>
           Mandaito&nbsp;<span style={{ color: '#fb923c' }}>Tech</span>
         </div>

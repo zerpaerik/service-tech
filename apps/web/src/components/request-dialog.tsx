@@ -24,6 +24,7 @@ import {
 } from 'react';
 import { submitLead } from '@/app/actions';
 import { WhatsAppIcon } from './icons';
+import { LogoMark } from './logo';
 import { WhatsAppText } from './whatsapp-text';
 
 type FormValues = Required<Omit<CreateLeadInput, 'budget'>> & { budget: string };
@@ -336,8 +337,8 @@ export function RequestDialog({
               <p className="text-[13px] font-medium text-fg-soft">Vista previa del mensaje</p>
               <div className="overflow-hidden rounded-2xl border border-line bg-[#0e1a17]">
                 <div className="flex items-center gap-3 border-b border-[#1b2f2a] bg-[#12221e] px-4 py-3.5">
-                  <span className="flex size-9.5 items-center justify-center rounded-full bg-linear-135 from-brand-soft to-accent font-display text-sm font-bold text-ink">
-                    MT
+                  <span className="flex size-9.5 items-center justify-center rounded-full bg-ink">
+                    <LogoMark id="chat-preview" size={24} />
                   </span>
                   <span className="flex flex-col">
                     <span className="text-sm font-semibold">Mandaito Tech</span>

@@ -1,20 +1,30 @@
+import { brandMark } from '@/lib/brand';
 import { site } from '@/lib/site';
 
+/** Símbolo de la marca. `id` debe ser único en la página (define el degradado). */
 export function LogoMark({ id, size = 34 }: { id: string; size?: number }) {
-  const gradientId = `logo-gradient-${id}`;
+  const gradientId = `mandaito-mark-${id}`;
   return (
-    <svg width={size} height={size} viewBox="0 0 34 34" aria-hidden="true">
+    <svg width={size} height={size} viewBox={brandMark.viewBox} aria-hidden="true">
       <defs>
-        <linearGradient id={gradientId} x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0" stopColor="#FB923C" />
-          <stop offset="1" stopColor="#22D3EE" />
+        <linearGradient
+          id={gradientId}
+          gradientUnits="userSpaceOnUse"
+          x1="4"
+          y1="58"
+          x2="60"
+          y2="6"
+        >
+          {brandMark.gradient.map((stop) => (
+            <stop key={stop.offset} offset={stop.offset} stopColor={stop.color} />
+          ))}
         </linearGradient>
       </defs>
-      <rect width="34" height="34" rx="10" fill={`url(#${gradientId})`} />
+      <path d={brandMark.bubble} fill={`url(#${gradientId})`} />
       <path
-        d="M13 11.5L8 17l5 5.5M21 11.5l5 5.5-5 5.5"
-        stroke="#0A0B14"
-        strokeWidth="2.4"
+        d={brandMark.growth}
+        stroke={brandMark.ink}
+        strokeWidth={5.2}
         fill="none"
         strokeLinecap="round"
         strokeLinejoin="round"
