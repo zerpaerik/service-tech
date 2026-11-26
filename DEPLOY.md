@@ -15,6 +15,22 @@ Solo `web` tiene dominio público. El API se alcanza únicamente por la red priv
 
 Cada app trae su `Dockerfile` y su `railway.json` (config as code): builder, _watch paths_, healthcheck y migraciones. Las imágenes se construyen desde la **raíz del repo**, porque necesitan `packages/shared`.
 
+## Opción rápida: solo la web (sin API ni base de datos)
+
+La web funciona sola: el formulario abre WhatsApp con el mensaje armado, pero **las solicitudes no se guardan**.
+
+1. **New Project → Deploy from GitHub repo** y elige este repositorio (un solo servicio).
+2. No hace falta tocar _Settings_: el `railway.json` de la raíz del repo ya le indica a Railway que construya la web con `apps/web/Dockerfile`. Deja _Root Directory_ vacío.
+3. **Variables**:
+   ```
+   WHATSAPP_NUMBER=584243298448
+   SITE_URL=https://${{RAILWAY_PUBLIC_DOMAIN}}
+   ```
+   No definas `API_INTERNAL_URL`: sin ella, la web no intenta guardar nada.
+4. **Networking → Generate Domain**.
+
+Para sumar el API más adelante, sigue los pasos 1 a 3 de abajo (Postgres y `api`) y agrega `API_INTERNAL_URL` al servicio `web`.
+
 ## 1. Crear el proyecto
 
 1. En Railway: **New Project → Deploy from GitHub repo** y elige este repositorio.
@@ -29,7 +45,7 @@ Cada app trae su `Dockerfile` y su `railway.json` (config as code): builder, _wa
 **Settings**
 
 - **Root Directory**: vacío (la raíz del repo).
-- **Config-as-code → Railway Config File**: `/apps/api/railway.json`.
+- **Config-as-code → Railway Config File**: `/apps/api/railway.json`. **Obligatorio**: sin esto, el servicio usaría el `railway.json` de la raíz y construiría la web.
 - **Networking**: no generes dominio público.
 
 **Variables**
@@ -50,7 +66,7 @@ INTERNAL_API_KEY=<una cadena aleatoria larga>   # opcional, recomendado
 **Settings**
 
 - **Root Directory**: vacío.
-- **Config-as-code → Railway Config File**: `/apps/web/railway.json`.
+- **Config-as-code → Railway Config File**: `/apps/web/railway.json` (opcional: el `railway.json` de la raíz ya apunta a la web).
 - **Networking → Generate Domain** (o agrega tu dominio propio).
 
 **Variables**

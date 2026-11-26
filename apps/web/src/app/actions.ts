@@ -51,7 +51,7 @@ export async function submitLead(input: SubmitLeadInput): Promise<SubmitLeadResu
         message: 'Enviaste varias solicitudes seguidas. Espera un minuto y vuelve a intentarlo.',
       };
     }
-    reference = leadReference(lead.id);
+    if (lead) reference = leadReference(lead.id);
   } catch (error) {
     console.error('[submitLead] No se pudo registrar el lead en el API:', error);
   }
@@ -64,8 +64,14 @@ export async function submitLead(input: SubmitLeadInput): Promise<SubmitLeadResu
   };
 }
 
-async function saveLead(data: unknown): Promise<CreatedLead | 'rate-limited'> {
-  const apiUrl = (process.env.API_INTERNAL_URL || 'http://localhost:3001').replace(/\/$/, '');
+/**
+ * Guarda el lead en el API. Devuelve null si API_INTERNAL_URL no está definido:
+ * la web puede desplegarse sola y en ese caso solo redirige a WhatsApp.
+ */
+async function saveLead(data: unknown): Promise<CreatedLead | 'rate-limited' | null> {
+  const apiUrl = process.env.API_INTERNAL_URL?.trim().replace(/\/$/, '');
+  if (!apiUrl) return null;
+
   const apiKey = process.env.INTERNAL_API_KEY;
   const requestHeaders = await headers();
   const clientIp =
