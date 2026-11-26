@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { createLeadSchema, toFieldErrors } from './lead.js';
+import { buildLeadSchema, createLeadSchema, toFieldErrors } from './lead.js';
 import {
   buildWhatsAppMessage,
   buildWhatsAppUrl,
@@ -39,6 +39,35 @@ describe('buildWhatsAppMessage', () => {
     expect(message).toContain('*Marketing digital*');
     expect(message).not.toContain('Presupuesto');
     expect(message).not.toContain('Contacto');
+  });
+});
+
+describe('buildWhatsAppMessage en inglés', () => {
+  it('traduce etiquetas, servicio y presupuesto', () => {
+    const message = buildWhatsAppMessage(
+      {
+        service: 'SOFTWARE',
+        name: 'John',
+        title: 'Inventory',
+        description: 'Stock for 3 stores',
+        budget: 'Más de $1.000',
+      },
+      'en',
+    );
+    expect(message).toBe(
+      [
+        "Hi, I'm John.",
+        "I'd like to request: *Custom software*",
+        '',
+        '*Title:* Inventory',
+        '*Description:* Stock for 3 stores',
+        '*Budget:* Over $1,000',
+      ].join('\n'),
+    );
+  });
+
+  it('usa marcadores en inglés', () => {
+    expect(buildWhatsAppMessage({ service: 'WEB' }, 'en')).toContain("Hi, I'm [your name].");
   });
 });
 
@@ -100,6 +129,20 @@ describe('createLeadSchema con campos ausentes', () => {
         name: 'Escribe tu nombre',
         title: 'Escribe un título breve para tu proyecto',
         description: 'Cuéntanos un poco más (mínimo 10 caracteres)',
+      });
+    }
+  });
+});
+
+describe('buildLeadSchema en inglés', () => {
+  it('devuelve los errores en inglés', () => {
+    const result = buildLeadSchema('en').safeParse({ service: 'WEB', name: 'J' });
+    expect(result.success).toBe(false);
+    if (!result.success) {
+      expect(toFieldErrors(result.error)).toEqual({
+        name: 'Enter your name',
+        title: 'Add a short title for your project',
+        description: 'Tell us a bit more (at least 10 characters)',
       });
     }
   });

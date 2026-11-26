@@ -5,7 +5,13 @@ import { site } from '@/lib/site';
 export function LogoMark({ id, size = 34 }: { id: string; size?: number }) {
   const gradientId = `mandaito-mark-${id}`;
   return (
-    <svg width={size} height={size} viewBox={brandMark.viewBox} aria-hidden="true">
+    <svg
+      width={size}
+      height={size}
+      viewBox={brandMark.viewBox}
+      aria-hidden="true"
+      className="flex-none"
+    >
       <defs>
         <linearGradient
           id={gradientId}
@@ -33,11 +39,21 @@ export function LogoMark({ id, size = 34 }: { id: string; size?: number }) {
   );
 }
 
-export function Logo({ id, size }: { id: string; size?: number }) {
+export function Logo({
+  id,
+  size,
+  wordmarkClassName = '',
+}: {
+  id: string;
+  size?: number;
+  wordmarkClassName?: string;
+}) {
   return (
-    <span className="flex items-center gap-2.5">
+    <span className="flex items-center gap-2 sm:gap-2.5">
       <LogoMark id={id} size={size} />
-      <span className="font-display text-[19px] font-bold tracking-tight whitespace-nowrap">
+      <span
+        className={`font-display text-[17px] font-bold tracking-tight whitespace-nowrap sm:text-[19px] ${wordmarkClassName}`}
+      >
         {site.shortName} <span className="text-brand-soft">Tech</span>
       </span>
     </span>

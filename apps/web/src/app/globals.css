@@ -1,22 +1,48 @@
 @import 'tailwindcss';
 
-@theme {
-  --color-ink: #0a0b14;
-  --color-ink-2: #0c0d19;
-  --color-surface: #11131f;
-  --color-surface-2: #151829;
-  --color-surface-3: #0f1120;
-  --color-line: #23263a;
-  --color-line-2: #2a2e47;
-  --color-line-3: #2e3250;
-  --color-fg: #edeef7;
-  --color-fg-soft: #c3c6db;
-  --color-fg-muted: #a3a7c2;
-  --color-fg-faint: #8a8fb0;
+/*
+ * Tema claro y oscuro. Los colores son variables que cambian según `data-theme`
+ * en <html> (lo fija el script de tema antes de pintar). `@theme inline` hace que
+ * las utilidades lean la variable en cada elemento, así un bloque con
+ * data-theme="dark" (p. ej. la ventana de código) se ve oscuro también en modo claro.
+ */
+@custom-variant light (&:where([data-theme='light'], [data-theme='light'] *));
 
+@theme inline {
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-surface-3: var(--surface-3);
+  --color-line: var(--line);
+  --color-line-2: var(--line-2);
+  --color-line-3: var(--line-3);
+  --color-fg: var(--fg);
+  --color-fg-soft: var(--fg-soft);
+  --color-fg-muted: var(--fg-muted);
+  --color-fg-faint: var(--fg-faint);
+  --color-tint: var(--tint);
+  --color-brand-soft: var(--brand-soft);
+  --color-brand-hover: var(--brand-hover);
+  --color-accent: var(--accent);
+  --color-danger: var(--danger);
+  --color-code-key: var(--code-key);
+  --color-chat-bg: var(--chat-bg);
+  --color-chat-header: var(--chat-header);
+  --color-chat-line: var(--chat-line);
+  --color-chat-bubble: var(--chat-bubble);
+  --color-chat-fg: var(--chat-fg);
+  --color-chat-meta: var(--chat-meta);
+
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-sora), var(--font-inter), ui-sans-serif, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+@theme {
+  /* Colores fijos de marca: iguales en los dos temas. */
   --color-brand: #f97316;
-  --color-brand-soft: #fb923c;
-  --color-accent: #22d3ee;
+  --color-on-brand: #0a0b14;
   --color-whatsapp: #25d366;
   --color-whatsapp-ink: #04210f;
 
@@ -61,34 +87,80 @@
   }
 }
 
-@theme inline {
-  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
-  --font-display: var(--font-sora), var(--font-inter), ui-sans-serif, sans-serif;
-  --font-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
-}
-
-@utility text-gradient {
-  background-image: linear-gradient(90deg, var(--color-brand-soft), var(--color-accent));
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
-
-@utility bg-grid {
-  background-image:
-    linear-gradient(rgb(255 255 255 / 0.035) 1px, transparent 1px),
-    linear-gradient(90deg, rgb(255 255 255 / 0.035) 1px, transparent 1px);
-  background-size: 56px 56px;
-  mask-image: radial-gradient(ellipse 70% 60% at 50% 30%, #000 30%, transparent 75%);
-}
-
-@utility mask-fade-x {
-  mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
-}
-
 @layer base {
-  html {
+  /* Oscuro: el diseño original y el valor por defecto sin JavaScript. */
+  :root,
+  [data-theme='dark'] {
     color-scheme: dark;
+    --ink: #0a0b14;
+    --ink-2: #0c0d19;
+    --surface: #11131f;
+    --surface-2: #151829;
+    --surface-3: #0f1120;
+    --line: #23263a;
+    --line-2: #2a2e47;
+    --line-3: #2e3250;
+    --fg: #edeef7;
+    --fg-soft: #c3c6db;
+    --fg-muted: #a3a7c2;
+    --fg-faint: #8a8fb0;
+    --tint: #ffffff;
+    --brand-soft: #fb923c;
+    --brand-hover: #fb923c;
+    --accent: #22d3ee;
+    --danger: #fca5a5;
+    --code-key: #fde68a;
+    --gradient-from: #fb923c;
+    --gradient-to: #22d3ee;
+    --glow-brand: rgb(249 115 22 / 0.36);
+    --glow-accent: rgb(34 211 238 / 0.2);
+    --shadow: rgb(0 0 0 / 0.45);
+    --shadow-strong: rgb(0 0 0 / 0.55);
+    --backdrop: rgb(5 6 12 / 0.78);
+    --chat-bg: #0e1a17;
+    --chat-header: #12221e;
+    --chat-line: #1b2f2a;
+    --chat-bubble: #1e5a45;
+    --chat-fg: #eaf7f1;
+    --chat-meta: #9fb8b0;
+  }
+
+  [data-theme='light'] {
+    color-scheme: light;
+    --ink: #f6f6fa;
+    --ink-2: #eeeff6;
+    --surface: #ffffff;
+    --surface-2: #f3f4f9;
+    --surface-3: #ffffff;
+    --line: #e3e5ee;
+    --line-2: #d8dbe7;
+    --line-3: #c9cddd;
+    --fg: #11131f;
+    --fg-soft: #363a52;
+    --fg-muted: #51566f;
+    --fg-faint: #6a6f8a;
+    --tint: #1b1f3a;
+    --brand-soft: #c2410c;
+    --brand-hover: #fb923c;
+    --accent: #0e7490;
+    --danger: #b91c1c;
+    --code-key: #b45309;
+    --gradient-from: #ea580c;
+    --gradient-to: #0891b2;
+    --glow-brand: rgb(249 115 22 / 0.22);
+    --glow-accent: rgb(8 145 178 / 0.14);
+    --shadow: rgb(27 31 58 / 0.1);
+    --shadow-strong: rgb(27 31 58 / 0.16);
+    --backdrop: rgb(17 19 31 / 0.45);
+    --chat-bg: #efeae2;
+    --chat-header: #f5f6f6;
+    --chat-line: #e2e4e3;
+    --chat-bubble: #d9fdd3;
+    --chat-fg: #111b21;
+    --chat-meta: #54656f;
+  }
+
+  html {
     scroll-behavior: smooth;
   }
   body {
@@ -98,13 +170,41 @@
     background: rgb(249 115 22 / 0.35);
   }
   :focus-visible {
-    outline: 2px solid var(--color-brand-soft);
+    outline: 2px solid var(--brand-soft);
     outline-offset: 2px;
   }
   dialog::backdrop {
-    background: rgb(5 6 12 / 0.78);
+    background: var(--backdrop);
     backdrop-filter: blur(8px);
   }
+}
+
+@utility text-gradient {
+  background-image: linear-gradient(90deg, var(--gradient-from), var(--gradient-to));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+@utility bg-grid {
+  --grid-line: color-mix(in srgb, var(--tint) 4%, transparent);
+  background-image:
+    linear-gradient(var(--grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 30%, #000 30%, transparent 75%);
+}
+
+@utility glow-brand {
+  background-image: radial-gradient(circle, var(--glow-brand), transparent 65%);
+}
+
+@utility glow-accent {
+  background-image: radial-gradient(circle, var(--glow-accent), transparent 65%);
+}
+
+@utility mask-fade-x {
+  mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
 }
 
 @media (prefers-reduced-motion: reduce) {

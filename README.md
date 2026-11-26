@@ -34,6 +34,12 @@ packages/
 
 Protecciones: campo trampa contra bots, límite de 5 solicitudes por minuto por IP, validación en el cliente y en el servidor, `helmet` y cabeceras de seguridad. Opcionalmente, una API key compartida entre web y API (`INTERNAL_API_KEY`).
 
+## Idiomas y tema
+
+- **Español** en `/` e **inglés** en `/en`. Cada idioma tiene su layout raíz (`app/(es)` y `app/en`) con su `<html lang>`, metadatos, `hreflang` e imagen para redes. Los textos viven en `apps/web/src/i18n/es.ts` y `en.ts` (TypeScript avisa si falta una traducción).
+- El mensaje de WhatsApp, los nombres de servicio y los errores del formulario salen en el idioma de la página (`packages/shared`). En la base de datos el presupuesto se guarda siempre en español.
+- **Modo claro y oscuro**: por defecto sigue el tema del sistema; el botón del header lo cambia y lo recuerda (`localStorage`). Los colores son variables CSS en `globals.css`, y un script en `<head>` aplica el tema antes de pintar para evitar parpadeos.
+
 ## Desarrollo local
 
 Requisitos: Node 24 (`.nvmrc`), pnpm 11 y Docker.

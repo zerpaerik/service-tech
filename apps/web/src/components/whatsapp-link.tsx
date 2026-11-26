@@ -1,22 +1,22 @@
-import { buildWhatsAppUrl } from '@mandaito/shared';
+import { buildWhatsAppUrl, WHATSAPP_GREETING, type Locale } from '@mandaito/shared';
 import type { ReactNode } from 'react';
 import { site } from '@/lib/site';
 
-const GREETING = 'Hola Mandaito Tech, quiero información sobre sus servicios.';
-
-/** Enlace directo a WhatsApp con un saludo precargado. */
+/** Enlace directo a WhatsApp con un saludo precargado en el idioma de la página. */
 export function WhatsAppLink({
+  lang,
   className,
   children,
   ariaLabel,
 }: {
+  lang: Locale;
   className?: string;
   children: ReactNode;
   ariaLabel?: string;
 }) {
   return (
     <a
-      href={buildWhatsAppUrl(site.whatsappNumber, GREETING)}
+      href={buildWhatsAppUrl(site.whatsappNumber, WHATSAPP_GREETING[lang])}
       target="_blank"
       rel="noopener noreferrer"
       aria-label={ariaLabel}

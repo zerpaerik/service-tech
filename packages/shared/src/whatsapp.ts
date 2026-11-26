@@ -1,4 +1,10 @@
-import { SERVICES, type ServiceType } from './services.js';
+import {
+  budgetLabel,
+  DEFAULT_LOCALE,
+  SERVICE_LABELS,
+  type Locale,
+  type ServiceType,
+} from './services.js';
 
 export interface WhatsAppLeadDraft {
   service: ServiceType;
@@ -11,24 +17,59 @@ export interface WhatsAppLeadDraft {
   reference?: string;
 }
 
+const COPY = {
+  es: {
+    hello: (name: string) => `Hola, soy ${name}.`,
+    request: 'Quiero solicitar:',
+    name: '[tu nombre]',
+    title: '[título del proyecto]',
+    description: '[describe tu proyecto]',
+    titleLabel: 'Título',
+    descriptionLabel: 'Descripción',
+    budgetLabel: 'Presupuesto',
+    contactLabel: 'Contacto',
+  },
+  en: {
+    hello: (name: string) => `Hi, I'm ${name}.`,
+    request: "I'd like to request:",
+    name: '[your name]',
+    title: '[project title]',
+    description: '[describe your project]',
+    titleLabel: 'Title',
+    descriptionLabel: 'Description',
+    budgetLabel: 'Budget',
+    contactLabel: 'Contact',
+  },
+} satisfies Record<Locale, Record<string, unknown>>;
+
+/** Saludo del enlace directo a WhatsApp. */
+export const WHATSAPP_GREETING: Record<Locale, string> = {
+  es: 'Hola Mandaito Tech, quiero información sobre sus servicios.',
+  en: "Hi Mandaito Tech, I'd like some information about your services.",
+};
+
 /**
- * Arma el texto que el cliente envía por WhatsApp.
+ * Arma el texto que el cliente envía por WhatsApp, en el idioma de la página.
  * Usa *negritas* con la sintaxis de WhatsApp.
  */
-export function buildWhatsAppMessage(draft: WhatsAppLeadDraft): string {
-  const name = draft.name?.trim() || '[tu nombre]';
-  const title = draft.title?.trim() || '[título del proyecto]';
-  const description = draft.description?.trim() || '[describe tu proyecto]';
+export function buildWhatsAppMessage(
+  draft: WhatsAppLeadDraft,
+  locale: Locale = DEFAULT_LOCALE,
+): string {
+  const c = COPY[locale];
+  const name = draft.name?.trim() || c.name;
+  const title = draft.title?.trim() || c.title;
+  const description = draft.description?.trim() || c.description;
 
   const lines = [
-    `Hola, soy ${name}.`,
-    `Quiero solicitar: *${SERVICES[draft.service].label}*`,
+    c.hello(name),
+    `${c.request} *${SERVICE_LABELS[locale][draft.service]}*`,
     '',
-    `*Título:* ${title}`,
-    `*Descripción:* ${description}`,
+    `*${c.titleLabel}:* ${title}`,
+    `*${c.descriptionLabel}:* ${description}`,
   ];
-  if (draft.budget) lines.push(`*Presupuesto:* ${draft.budget}`);
-  if (draft.contact?.trim()) lines.push(`*Contacto:* ${draft.contact.trim()}`);
+  if (draft.budget) lines.push(`*${c.budgetLabel}:* ${budgetLabel(draft.budget, locale)}`);
+  if (draft.contact?.trim()) lines.push(`*${c.contactLabel}:* ${draft.contact.trim()}`);
   if (draft.reference) lines.push('', `Ref. ${draft.reference}`);
   return lines.join('\n');
 }

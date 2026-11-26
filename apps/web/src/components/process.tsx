@@ -1,39 +1,22 @@
+import { getDictionary, type Locale } from '@/i18n';
 import { Reveal } from './reveal';
 import { SectionHeading } from './section-heading';
 
-const steps = [
-  {
-    title: 'Conversamos',
-    text: 'Nos cuentas tu idea por WhatsApp y entendemos tu negocio, tus objetivos y tu presupuesto.',
-  },
-  {
-    title: 'Diseñamos',
-    text: 'Te proponemos alcance, diseño y tiempos claros antes de escribir una sola línea de código.',
-  },
-  {
-    title: 'Desarrollamos',
-    text: 'Construimos por etapas, con avances que puedes revisar y probar en cada entrega.',
-  },
-  {
-    title: 'Lanzamos',
-    text: 'Publicamos, medimos resultados y te acompañamos con soporte y mejoras continuas.',
-  },
-];
-
-export function Process() {
+export function Process({ lang }: { lang: Locale }) {
+  const t = getDictionary(lang);
   return (
     <section
-      id="proceso"
-      className="scroll-mt-18 border-y border-white/5 bg-ink-2 px-6 py-24 sm:py-26"
+      id={t.anchors.process}
+      className="scroll-mt-18 border-y border-tint/5 bg-ink-2 px-6 py-24 sm:py-26"
     >
       <div className="mx-auto max-w-[1200px]">
         <Reveal>
-          <SectionHeading eyebrow="Cómo trabajamos" title="Un proceso claro, sin sorpresas" />
+          <SectionHeading eyebrow={t.process.eyebrow} title={t.process.title} />
         </Reveal>
         <ol className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
-          {steps.map((step, index) => (
+          {t.process.steps.map((step, index) => (
             <Reveal key={step.title} delay={index * 0.08}>
-              <li className="h-full rounded-[20px] border border-line bg-surface p-7">
+              <li className="h-full rounded-[20px] border border-line bg-surface p-7 shadow-[0_1px_2px_var(--shadow)]">
                 <span className="text-gradient font-display text-[40px] font-bold tracking-tight">
                   {String(index + 1).padStart(2, '0')}
                 </span>

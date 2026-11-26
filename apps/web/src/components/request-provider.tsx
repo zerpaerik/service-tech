@@ -1,6 +1,7 @@
 'use client';
 
-import type { ServiceType } from '@mandaito/shared';
+import type { Locale, ServiceType } from '@mandaito/shared';
+import type { Dictionary } from '@/i18n';
 import { createContext, useCallback, useContext, useMemo, useState, type ReactNode } from 'react';
 import { RequestDialog } from './request-dialog';
 
@@ -11,9 +12,13 @@ interface RequestContextValue {
 const RequestContext = createContext<RequestContextValue | null>(null);
 
 export function RequestProvider({
+  lang,
+  copy,
   whatsappNumber,
   children,
 }: {
+  lang: Locale;
+  copy: Dictionary['request'];
   whatsappNumber: string;
   children: ReactNode;
 }) {
@@ -36,6 +41,8 @@ export function RequestProvider({
       {children}
       <RequestDialog
         key={state.key}
+        lang={lang}
+        copy={copy}
         open={state.open}
         initialService={state.service}
         whatsappNumber={whatsappNumber}

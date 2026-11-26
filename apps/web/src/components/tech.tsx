@@ -1,4 +1,5 @@
 import { CodeXml, TrendingUp, type LucideIcon } from 'lucide-react';
+import { getDictionary, type Locale } from '@/i18n';
 import { WhatsAppIcon } from './icons';
 import { Reveal } from './reveal';
 import { SectionHeading } from './section-heading';
@@ -20,33 +21,15 @@ const technologies = [
   'Figma',
 ];
 
-const reasons: { title: string; text: string; icon: LucideIcon | typeof WhatsAppIcon }[] = [
-  {
-    title: 'Código propio, sin plantillas',
-    text: 'Cada proyecto se construye para tu caso y el código es tuyo.',
-    icon: CodeXml,
-  },
-  {
-    title: 'Comunicación directa',
-    text: 'Hablas con quien construye tu proyecto, por WhatsApp y sin intermediarios.',
-    icon: WhatsAppIcon,
-  },
-  {
-    title: 'Pensado para crecer',
-    text: 'Arquitectura escalable en la nube, lista para sumar funciones cuando las necesites.',
-    icon: TrendingUp,
-  },
-];
+const reasonIcons: (LucideIcon | typeof WhatsAppIcon)[] = [CodeXml, WhatsAppIcon, TrendingUp];
 
-export function Tech() {
+export function Tech({ lang }: { lang: Locale }) {
+  const t = getDictionary(lang);
   return (
-    <section id="tecnologias" className="scroll-mt-18 px-6 py-24 sm:py-26">
+    <section id={t.anchors.tech} className="scroll-mt-18 px-6 py-24 sm:py-26">
       <div className="mx-auto max-w-[1200px]">
         <Reveal>
-          <SectionHeading
-            eyebrow="Tecnologías"
-            title="Construimos con herramientas modernas y probadas"
-          />
+          <SectionHeading eyebrow={t.tech.eyebrow} title={t.tech.title} />
         </Reveal>
 
         <div className="mask-fade-x -mt-4 overflow-hidden py-2">
@@ -55,7 +38,7 @@ export function Tech() {
               <li
                 key={`${tech}-${index}`}
                 aria-hidden={index >= technologies.length ? true : undefined}
-                className="flex-none rounded-xl border border-line bg-surface px-5 py-3 text-[15px] font-medium whitespace-nowrap text-fg-soft"
+                className="flex-none rounded-xl border border-line bg-surface px-5 py-3 shadow-[0_1px_2px_var(--shadow)] text-[15px] font-medium whitespace-nowrap text-fg-soft"
               >
                 {tech}
               </li>
@@ -64,8 +47,8 @@ export function Tech() {
         </div>
 
         <div className="mt-14 grid grid-cols-1 gap-8 md:grid-cols-3">
-          {reasons.map((reason, index) => {
-            const Icon = reason.icon;
+          {t.tech.reasons.map((reason, index) => {
+            const Icon = reasonIcons[index] ?? CodeXml;
             return (
               <Reveal key={reason.title} delay={index * 0.08}>
                 <div className="flex items-start gap-4">

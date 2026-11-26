@@ -1,5 +1,6 @@
 import { WEB_STARTING_PRICE, type ServiceType } from '@mandaito/shared';
 import { ArrowRight, CodeXml, Globe, Layers, TrendingUp, type LucideIcon } from 'lucide-react';
+import { getDictionary, type Dictionary, type Locale } from '@/i18n';
 import { buttonStyles } from '@/lib/ui';
 import { Reveal } from './reveal';
 import { RequestButton } from './request-button';
@@ -7,60 +8,27 @@ import { SectionHeading } from './section-heading';
 
 interface ServiceCard {
   id: ServiceType;
-  title: string;
-  description: string;
   icon: LucideIcon;
-  tags?: string[];
   wide?: boolean;
   glow?: 'brand' | 'accent';
   price?: number;
 }
 
 const cards: ServiceCard[] = [
-  {
-    id: 'SOFTWARE',
-    title: 'Software a medida',
-    description:
-      'Plataformas que se adaptan a tus procesos, no al revés: ERPs, CRMs, portales internos, integraciones y automatización de tareas repetitivas.',
-    icon: CodeXml,
-    tags: ['Aplicaciones web', 'APIs e integraciones', 'Automatización', 'Paneles y reportes'],
-    wide: true,
-    glow: 'brand',
-  },
-  {
-    id: 'WEB',
-    title: 'Desarrollo web',
-    description:
-      'Sitios, landing pages y tiendas online rápidas, optimizadas para SEO y pensadas para convertir visitas en clientes.',
-    icon: Globe,
-    price: WEB_STARTING_PRICE,
-  },
-  {
-    id: 'MARKETING',
-    title: 'Marketing digital',
-    description:
-      'Estrategia, campañas en Google y redes sociales, contenido y analítica para atraer clientes y medir cada resultado.',
-    icon: TrendingUp,
-  },
-  {
-    id: 'SYSTEMS',
-    title: 'Sistemas y aplicaciones',
-    description:
-      'Sistemas de gestión y apps móviles para inventario, ventas, reservas o facturación, con acceso desde cualquier dispositivo.',
-    icon: Layers,
-    tags: ['Inventario y ventas', 'Reservas y agenda', 'Apps móviles'],
-    wide: true,
-    glow: 'accent',
-  },
+  { id: 'SOFTWARE', icon: CodeXml, wide: true, glow: 'brand' },
+  { id: 'WEB', icon: Globe, price: WEB_STARTING_PRICE },
+  { id: 'MARKETING', icon: TrendingUp },
+  { id: 'SYSTEMS', icon: Layers, wide: true, glow: 'accent' },
 ];
 
-export function Services() {
+export function Services({ lang }: { lang: Locale }) {
+  const t = getDictionary(lang);
   return (
-    <section id="servicios" className="scroll-mt-18 px-6 py-24 sm:py-28">
+    <section id={t.anchors.services} className="scroll-mt-18 px-6 py-24 sm:py-28">
       <div className="mx-auto max-w-[1200px]">
         <Reveal>
-          <SectionHeading eyebrow="Servicios" title="Soluciones digitales de punta a punta">
-            Desde tu primera web hasta el sistema que organiza toda tu operación.
+          <SectionHeading eyebrow={t.services.eyebrow} title={t.services.title}>
+            {t.services.lead}
           </SectionHeading>
         </Reveal>
         <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
@@ -70,7 +38,7 @@ export function Services() {
               delay={index * 0.06}
               className={card.wide ? 'md:col-span-2' : undefined}
             >
-              <ServiceCardView card={card} />
+              <ServiceCardView card={card} t={t.services} />
             </Reveal>
           ))}
         </div>
@@ -79,35 +47,36 @@ export function Services() {
   );
 }
 
-function ServiceCardView({ card }: { card: ServiceCard }) {
+function ServiceCardView({ card, t }: { card: ServiceCard; t: Dictionary['services'] }) {
   const Icon = card.icon;
+  const copy = t.cards[card.id];
   return (
-    <article className="group relative flex h-full min-h-80 flex-col gap-4 overflow-hidden rounded-[22px] border border-line bg-surface p-8 transition duration-300 hover:-translate-y-0.75 hover:border-white/22 hover:bg-[#141729] sm:p-8.5">
+    <article className="group relative flex h-full min-h-80 flex-col gap-4 overflow-hidden rounded-[22px] border border-line bg-surface p-8 shadow-[0_1px_2px_var(--shadow)] transition duration-300 hover:-translate-y-0.75 hover:border-tint/22 hover:bg-surface-2 hover:shadow-[0_20px_44px_var(--shadow)] sm:p-8.5">
       {card.glow ? (
         <div
           aria-hidden="true"
           className={
             card.glow === 'brand'
-              ? 'absolute -top-45 -right-35 size-[420px] rounded-full bg-[radial-gradient(circle,rgba(249,115,22,0.36),transparent_65%)] opacity-70'
-              : 'absolute -right-30 -bottom-55 size-[420px] rounded-full bg-[radial-gradient(circle,rgba(34,211,238,0.2),transparent_65%)] opacity-80'
+              ? 'absolute -top-45 -right-35 size-[420px] rounded-full glow-brand opacity-70'
+              : 'absolute -right-30 -bottom-55 size-[420px] rounded-full glow-accent opacity-80'
           }
         />
       ) : null}
 
-      <span className="relative flex size-13.5 items-center justify-center rounded-[14px] border border-white/8 bg-brand/15">
+      <span className="relative flex size-13.5 items-center justify-center rounded-[14px] border border-tint/8 bg-brand/15">
         <Icon className="size-6.5 text-brand-soft" aria-hidden="true" />
       </span>
       <h3 className="relative mt-1.5 font-display text-2xl font-bold tracking-tight sm:text-[26px]">
-        {card.title}
+        {copy.title}
       </h3>
-      <p className="relative max-w-[520px] leading-relaxed text-fg-muted">{card.description}</p>
+      <p className="relative max-w-[520px] leading-relaxed text-fg-muted">{copy.description}</p>
 
-      {card.tags ? (
+      {copy.tags.length > 0 ? (
         <ul className="relative flex flex-wrap gap-2">
-          {card.tags.map((tag) => (
+          {copy.tags.map((tag) => (
             <li
               key={tag}
-              className="rounded-full border border-line-2 bg-white/5 px-3 py-1.5 text-[13px] text-fg-soft"
+              className="rounded-full border border-line-2 bg-tint/5 px-3 py-1.5 text-[13px] text-fg-soft"
             >
               {tag}
             </li>
@@ -116,17 +85,17 @@ function ServiceCardView({ card }: { card: ServiceCard }) {
       ) : null}
 
       {card.price ? (
-        <div className="relative flex items-baseline gap-2 rounded-[14px] border border-white/8 bg-brand/15 px-4 py-3.5">
-          <span className="text-sm font-medium text-fg-soft">Desde</span>
+        <div className="relative flex items-baseline gap-2 rounded-[14px] border border-tint/8 bg-brand/15 px-4 py-3.5">
+          <span className="text-sm font-medium text-fg-soft">{t.from}</span>
           <span className="font-display text-[34px] leading-none font-bold tracking-tight text-brand-soft">
             ${card.price}
           </span>
-          <span className="text-[13px] text-fg-muted">por sitio web</span>
+          <span className="text-[13px] text-fg-muted">{t.perSite}</span>
         </div>
       ) : null}
 
       <RequestButton service={card.id} className={`relative mt-auto ${buttonStyles.ghostSm}`}>
-        {card.wide ? 'Solicitar este servicio' : 'Solicitar'}
+        {card.wide ? t.requestThis : t.request}
         <ArrowRight className="size-4" aria-hidden="true" />
       </RequestButton>
     </article>

@@ -18,6 +18,8 @@ const nextConfig: NextConfig = {
   poweredByHeader: false,
   cacheComponents: true,
   partialPrefetching: true,
+  // Hay un layout raíz por idioma, así que el 404 global vive en app/global-not-found.tsx.
+  experimental: { globalNotFound: true },
   turbopack: {
     root: monorepoRoot,
     rules: {

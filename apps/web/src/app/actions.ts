@@ -3,14 +3,18 @@
 import { headers } from 'next/headers';
 import {
   buildWhatsAppMessage,
+  buildLeadSchema,
   buildWhatsAppUrl,
-  createLeadSchema,
+  DEFAULT_LOCALE,
+  LOCALES,
   leadReference,
   toFieldErrors,
   type CreatedLead,
   type CreateLeadInput,
   type LeadFieldErrors,
+  type Locale,
 } from '@mandaito/shared';
+import { getDictionary } from '@/i18n';
 import { site } from '@/lib/site';
 
 export type SubmitLeadResult =
@@ -29,8 +33,15 @@ const API_TIMEOUT_MS = 5000;
  * el enlace de WhatsApp con el mensaje listo. Si el API no responde, el cliente
  * igual puede escribirnos: nunca perdemos el contacto.
  */
-export async function submitLead(input: SubmitLeadInput): Promise<SubmitLeadResult> {
-  const parsed = createLeadSchema.safeParse(input);
+export async function submitLead(
+  input: SubmitLeadInput,
+  requestedLang?: Locale,
+): Promise<SubmitLeadResult> {
+  // El idioma llega del cliente: solo aceptamos los que existen.
+  const lang = LOCALES.includes(requestedLang as Locale)
+    ? (requestedLang as Locale)
+    : DEFAULT_LOCALE;
+  const parsed = buildLeadSchema(lang).safeParse(input);
   if (!parsed.success) {
     return { ok: false, errors: toFieldErrors(parsed.error) };
   }
@@ -48,7 +59,7 @@ export async function submitLead(input: SubmitLeadInput): Promise<SubmitLeadResu
       return {
         ok: false,
         errors: {},
-        message: 'Enviaste varias solicitudes seguidas. Espera un minuto y vuelve a intentarlo.',
+        message: getDictionary(lang).request.rateLimited,
       };
     }
     if (lead) reference = leadReference(lead.id);
@@ -56,7 +67,7 @@ export async function submitLead(input: SubmitLeadInput): Promise<SubmitLeadResu
     console.error('[submitLead] No se pudo registrar el lead en el API:', error);
   }
 
-  const message = buildWhatsAppMessage({ ...data, reference });
+  const message = buildWhatsAppMessage({ ...data, reference }, lang);
   return {
     ok: true,
     whatsappUrl: buildWhatsAppUrl(site.whatsappNumber, message),

@@ -1,12 +1,10 @@
 import { ImageResponse } from 'next/og';
-import { brandMarkDataUri } from '@/lib/brand';
-import { site } from '@/lib/site';
+import { getDictionary, type Locale } from '@/i18n';
+import { brandMarkDataUri } from './brand';
 
-export const alt = `${site.name} · ${site.tagline}`;
-export const size = { width: 1200, height: 630 };
-export const contentType = 'image/png';
-
-export default function OpengraphImage() {
+/** Imagen para compartir en redes (siempre en el diseño oscuro de la marca). */
+export function renderOgImage(lang: Locale, size: { width: number; height: number }) {
+  const t = getDictionary(lang).meta;
   return new ImageResponse(
     <div
       style={{
@@ -62,10 +60,10 @@ export default function OpengraphImage() {
           maxWidth: 980,
         }}
       >
-        Convertimos ideas en software que hace crecer tu negocio
+        {t.ogHeadline}
       </div>
       <div style={{ display: 'flex', marginTop: 32, fontSize: 30, color: '#c3c6db' }}>
-        Software a medida · Webs desde $50 · Marketing digital
+        {t.ogSubline}
       </div>
     </div>,
     size,
