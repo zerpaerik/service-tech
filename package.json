@@ -1,0 +1,27 @@
+{
+  "name": "mandaito-tech",
+  "private": true,
+  "packageManager": "pnpm@11.1.3",
+  "engines": {
+    "node": ">=22.12"
+  },
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "typecheck": "turbo run typecheck",
+    "test": "turbo run test",
+    "lint": "oxlint",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "db:up": "docker compose up -d postgres",
+    "db:down": "docker compose down",
+    "db:migrate": "pnpm --filter @mandaito/api db:migrate",
+    "db:studio": "pnpm --filter @mandaito/api db:studio"
+  },
+  "devDependencies": {
+    "oxlint": "^1.95.0",
+    "prettier": "^3.8.2",
+    "turbo": "^2.11.13",
+    "typescript": "~6.0.3"
+  }
+}

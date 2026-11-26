@@ -1,0 +1,8 @@
+packages:
+  - apps/*
+  - packages/*
+
+# Paquetes a los que se les permite ejecutar scripts de instalación.
+allowBuilds:
+  '@prisma/engines': true
+  prisma: true

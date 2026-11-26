@@ -1,0 +1,23 @@
+# Dependencias
+node_modules/
+
+# Builds
+dist/
+.next/
+out/
+.turbo/
+*.tsbuildinfo
+next-env.d.ts
+
+# Prisma client generado
+apps/api/src/generated/
+
+# Entorno
+.env
+.env.*
+!.env.example
+
+# Logs y sistema
+*.log
+.DS_Store
+coverage/

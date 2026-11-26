@@ -1,0 +1,44 @@
+// Modelo de datos de Mandaito Tech.
+
+generator client {
+  provider            = "prisma-client"
+  output              = "../src/generated/prisma"
+  moduleFormat        = "esm"
+  importFileExtension = "js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum ServiceType {
+  SOFTWARE
+  WEB
+  MARKETING
+  SYSTEMS
+}
+
+enum LeadStatus {
+  NEW
+  CONTACTED
+  WON
+  LOST
+}
+
+/// Solicitud de servicio enviada desde la landing.
+model Lead {
+  id          String      @id @default(cuid())
+  service     ServiceType
+  name        String      @db.VarChar(80)
+  contact     String?     @db.VarChar(120)
+  title       String      @db.VarChar(120)
+  description String      @db.Text
+  budget      String?     @db.VarChar(40)
+  status      LeadStatus  @default(NEW)
+  createdAt   DateTime    @default(now()) @map("created_at")
+  updatedAt   DateTime    @updatedAt @map("updated_at")
+
+  @@index([createdAt])
+  @@index([status])
+  @@map("leads")
+}
