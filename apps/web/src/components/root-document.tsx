@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 import type { Locale } from '@/i18n';
 import { inter, sora } from '@/lib/fonts';
+import { Analytics } from './analytics';
 import { themeInitScript } from '@/lib/theme';
 
 /** <html> y <body> comunes a los layouts raíz de cada idioma. */
@@ -13,7 +14,10 @@ export function RootDocument({ lang, children }: { lang: Locale; children: React
         {/* Contenido estático, sin datos del usuario. */}
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
       </head>
-      <body className="min-h-dvh overflow-x-hidden">{children}</body>
+      <body className="min-h-dvh overflow-x-hidden">
+        {children}
+        <Analytics />
+      </body>
     </html>
   );
 }

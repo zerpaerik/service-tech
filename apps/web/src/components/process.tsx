@@ -1,4 +1,5 @@
 import { getDictionary, type Locale } from '@/i18n';
+import { ProgressLine } from './progress-line';
 import { Reveal } from './reveal';
 import { SectionHeading } from './section-heading';
 
@@ -13,6 +14,7 @@ export function Process({ lang }: { lang: Locale }) {
         <Reveal>
           <SectionHeading eyebrow={t.process.eyebrow} title={t.process.title} />
         </Reveal>
+        <ProgressLine steps={t.process.steps.length} />
         <ol className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {t.process.steps.map((step, index) => (
             <Reveal key={step.title} delay={index * 0.08}>

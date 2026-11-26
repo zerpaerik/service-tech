@@ -61,21 +61,55 @@ describe('API de leads', () => {
     expect(res.body).toEqual({ id: 'cmtest0000abc123' });
     expect(prisma.lead.create).toHaveBeenCalledWith({
       data: {
+        kind: 'REQUEST',
         service: 'WEB',
         name: 'María',
         contact: null,
         title: 'Tienda online',
         description: 'Necesito un catálogo con pagos en línea.',
         budget: '$50 – $200',
+        callAt: null,
+        callMode: null,
+        source: null,
+        locale: 'es',
       },
       select: { id: true },
     });
   });
 
+  it('POST /leads guarda una llamada con la cita en hora de Venezuela', async () => {
+    await request(app.getHttpServer())
+      .post('/leads')
+      .send({
+        kind: 'CALL',
+        service: 'SYSTEMS',
+        name: 'John',
+        callMode: 'VIDEO',
+        callDate: '2026-11-27',
+        callTime: '10:00',
+        source: 'instagram / cpc / lanzamiento',
+        locale: 'en',
+      })
+      .expect(201);
+    expect(prisma.lead.create).toHaveBeenCalledWith(
+      expect.objectContaining({
+        data: expect.objectContaining({
+          kind: 'CALL',
+          title: null,
+          description: null,
+          callAt: new Date('2026-11-27T14:00:00.000Z'),
+          callMode: 'VIDEO',
+          source: 'instagram / cpc / lanzamiento',
+          locale: 'en',
+        }),
+      }),
+    );
+  });
+
   it('POST /leads rechaza datos inválidos con errores por campo', async () => {
     const res = await request(app.getHttpServer())
       .post('/leads')
-      .send({ service: 'OTRO', name: 'M', title: '', description: 'corta' })
+      .send({ service: 'OTRO', name: 'M', title: '' })
       .expect(400);
     expect(res.body.errors).toMatchObject({
       service: 'Elige un tipo de servicio',

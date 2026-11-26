@@ -5,6 +5,7 @@ import { buttonStyles } from '@/lib/ui';
 import { Reveal } from './reveal';
 import { RequestButton } from './request-button';
 import { SectionHeading } from './section-heading';
+import { SpotlightCard } from './spotlight-card';
 
 interface ServiceCard {
   id: ServiceType;
@@ -51,7 +52,10 @@ function ServiceCardView({ card, t }: { card: ServiceCard; t: Dictionary['servic
   const Icon = card.icon;
   const copy = t.cards[card.id];
   return (
-    <article className="group relative flex h-full min-h-80 flex-col gap-4 overflow-hidden rounded-[22px] border border-line bg-surface p-8 shadow-[0_1px_2px_var(--shadow)] transition duration-300 hover:-translate-y-0.75 hover:border-tint/22 hover:bg-surface-2 hover:shadow-[0_20px_44px_var(--shadow)] sm:p-8.5">
+    <SpotlightCard
+      glow={card.glow === 'accent' ? 'accent' : 'brand'}
+      className="flex h-full min-h-80 flex-col gap-4 overflow-hidden rounded-[22px] border border-line bg-surface p-8 shadow-[0_1px_2px_var(--shadow)] transition duration-300 hover:-translate-y-0.75 hover:border-tint/22 hover:shadow-[0_20px_44px_var(--shadow)] sm:p-8.5"
+    >
       {card.glow ? (
         <div
           aria-hidden="true"
@@ -98,6 +102,6 @@ function ServiceCardView({ card, t }: { card: ServiceCard; t: Dictionary['servic
         {card.wide ? t.requestThis : t.request}
         <ArrowRight className="size-4" aria-hidden="true" />
       </RequestButton>
-    </article>
+    </SpotlightCard>
   );
 }

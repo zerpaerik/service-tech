@@ -4,7 +4,7 @@
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
-      "env": ["WHATSAPP_NUMBER", "SITE_URL"],
+      "env": ["WHATSAPP_NUMBER", "SITE_URL", "GA_MEASUREMENT_ID", "META_PIXEL_ID"],
       "outputs": ["dist/**", ".next/**", "!.next/cache/**"]
     },
     "typecheck": {

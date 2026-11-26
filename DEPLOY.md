@@ -76,9 +76,11 @@ WHATSAPP_NUMBER=584243298448              # código de país + número, solo dí
 SITE_URL=https://${{RAILWAY_PUBLIC_DOMAIN}}   # o tu dominio propio, ej. https://mandaito.tech
 API_INTERNAL_URL=http://${{api.RAILWAY_PRIVATE_DOMAIN}}:${{api.PORT}}
 INTERNAL_API_KEY=${{api.INTERNAL_API_KEY}}  # solo si lo definiste en el api
+GA_MEASUREMENT_ID=G-XXXXXXXXXX             # opcional: Google Analytics 4
+META_PIXEL_ID=123456789012345              # opcional: Pixel de Meta (Facebook/Instagram Ads)
 ```
 
-`WHATSAPP_NUMBER` y `SITE_URL` se pasan al build (el Dockerfile los declara como `ARG`), porque la página es estática. Cambiarlos redespliega y recompila automáticamente.
+`WHATSAPP_NUMBER`, `SITE_URL` y los IDs de medición se pasan al build (el Dockerfile los declara como `ARG`), porque la página es estática. Cambiarlos redespliega y recompila automáticamente.
 
 Healthcheck: `/api/health`.
 

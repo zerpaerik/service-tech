@@ -18,6 +18,17 @@ enum ServiceType {
   SYSTEMS
 }
 
+enum LeadKind {
+  REQUEST
+  CALL
+}
+
+enum CallMode {
+  VIDEO
+  WHATSAPP
+  PHONE
+}
+
 enum LeadStatus {
   NEW
   CONTACTED
@@ -25,20 +36,29 @@ enum LeadStatus {
   LOST
 }
 
-/// Solicitud de servicio enviada desde la landing.
+/// Solicitud enviada desde la landing: pedir un servicio o agendar una llamada.
 model Lead {
   id          String      @id @default(cuid())
+  kind        LeadKind    @default(REQUEST)
   service     ServiceType
   name        String      @db.VarChar(80)
   contact     String?     @db.VarChar(120)
-  title       String      @db.VarChar(120)
-  description String      @db.Text
+  /// Lo que necesita, en pocas palabras (p. ej. "Tienda online").
+  title       String?     @db.VarChar(120)
+  description String?     @db.Text
   budget      String?     @db.VarChar(40)
+  /// Cita pedida (solo llamadas), como instante exacto.
+  callAt      DateTime?   @map("call_at")
+  callMode    CallMode?   @map("call_mode")
+  /// De dónde llegó la persona: UTM o sitio de referencia.
+  source      String?     @db.VarChar(200)
+  locale      String      @default("es") @db.VarChar(5)
   status      LeadStatus  @default(NEW)
   createdAt   DateTime    @default(now()) @map("created_at")
   updatedAt   DateTime    @updatedAt @map("updated_at")
 
   @@index([createdAt])
   @@index([status])
+  @@index([kind])
   @@map("leads")
 }

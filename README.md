@@ -40,6 +40,33 @@ Protecciones: campo trampa contra bots, límite de 5 solicitudes por minuto por 
 - El mensaje de WhatsApp, los nombres de servicio y los errores del formulario salen en el idioma de la página (`packages/shared`). En la base de datos el presupuesto se guarda siempre en español.
 - **Modo claro y oscuro**: por defecto sigue el tema del sistema; el botón del header lo cambia y lo recuerda (`localStorage`). Los colores son variables CSS en `globals.css`, y un script en `<head>` aplica el tema antes de pintar para evitar parpadeos.
 
+## Promoción y campañas
+
+**Enlaces directos** (para la bio de Instagram, anuncios o estados de WhatsApp). Abren el formulario al entrar:
+
+| Enlace                             | Qué hace                                                                     |
+| ---------------------------------- | ---------------------------------------------------------------------------- |
+| `https://tu-dominio/?solicitar`    | Abre "Solicitar servicio"                                                    |
+| `https://tu-dominio/?servicio=web` | Lo abre con el servicio elegido (`web`, `software`, `marketing`, `sistemas`) |
+| `https://tu-dominio/?agendar`      | Abre directo en "Agendar llamada"                                            |
+| `https://tu-dominio/en?book`       | Lo mismo en inglés (`?request`, `?service=web`)                              |
+
+Agrega parámetros UTM para saber qué campaña trae clientes, por ejemplo `?agendar&utm_source=instagram&utm_medium=bio&utm_campaign=lanzamiento`. El origen se guarda con cada solicitud (columna `source` de la tabla `leads`).
+
+**Textos que se editan a mano** (en `apps/web/src/i18n/es.ts` y `en.ts`):
+
+- `promo`: la franja superior de promoción. En `null` no se muestra.
+- `packages.plans`: paquetes, precios (`price: null` muestra "A medida") y lo que incluye cada uno.
+- `faq.items`: preguntas frecuentes.
+
+**Horario de llamadas**: `apps/web/src/lib/schedule.ts` (`CALL_HOURS`, de lunes a viernes, hora de Venezuela).
+
+**Medición**: con `GA_MEASUREMENT_ID` y/o `META_PIXEL_ID` en el servicio web se activan Google Analytics 4 y el Pixel de Meta, con estos eventos:
+
+- al abrir el formulario: `open_form`;
+- al enviar una solicitud: `generate_lead` en GA4, y `Lead` o `Schedule` en Meta;
+- al tocar WhatsApp: `contact_whatsapp` en GA4 y `Contact` en Meta.
+
 ## Desarrollo local
 
 Requisitos: Node 24 (`.nvmrc`), pnpm 11 y Docker.
@@ -70,16 +97,18 @@ En `apps/web/.env.local` define `WHATSAPP_NUMBER` con código de país y solo d�
 
 ## Variables de entorno
 
-| Servicio | Variable           | Descripción                                                                   |
-| -------- | ------------------ | ----------------------------------------------------------------------------- |
-| api      | `DATABASE_URL`     | Conexión a Postgres                                                           |
-| api      | `PORT`             | Puerto (3001 por defecto)                                                     |
-| api      | `INTERNAL_API_KEY` | Opcional: exige la cabecera `x-api-key`                                       |
-| api      | `CORS_ORIGIN`      | Opcional: orígenes permitidos, separados por coma (solo si el API es público) |
-| web      | `WHATSAPP_NUMBER`  | Número de destino. **Se fija en el build**                                    |
-| web      | `SITE_URL`         | URL pública (canonical, sitemap, Open Graph). **Se fija en el build**         |
-| web      | `API_INTERNAL_URL` | URL del API                                                                   |
-| web      | `INTERNAL_API_KEY` | Debe coincidir con la del API si se usa                                       |
+| Servicio | Variable            | Descripción                                                                   |
+| -------- | ------------------- | ----------------------------------------------------------------------------- |
+| api      | `DATABASE_URL`      | Conexión a Postgres                                                           |
+| api      | `PORT`              | Puerto (3001 por defecto)                                                     |
+| api      | `INTERNAL_API_KEY`  | Opcional: exige la cabecera `x-api-key`                                       |
+| api      | `CORS_ORIGIN`       | Opcional: orígenes permitidos, separados por coma (solo si el API es público) |
+| web      | `WHATSAPP_NUMBER`   | Número de destino. **Se fija en el build**                                    |
+| web      | `SITE_URL`          | URL pública (canonical, sitemap, Open Graph). **Se fija en el build**         |
+| web      | `GA_MEASUREMENT_ID` | Opcional. Google Analytics 4 (`G-…`). **Se fija en el build**                 |
+| web      | `META_PIXEL_ID`     | Opcional. Pixel de Meta (solo dígitos). **Se fija en el build**               |
+| web      | `API_INTERNAL_URL`  | URL del API                                                                   |
+| web      | `INTERNAL_API_KEY`  | Debe coincidir con la del API si se usa                                       |
 
 La página se genera estática para que cargue más rápido, así que `WHATSAPP_NUMBER` y `SITE_URL` se leen al compilar. En Railway, cambiar una variable dispara un nuevo deploy, que vuelve a compilar.
 

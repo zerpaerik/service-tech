@@ -2,15 +2,20 @@
 
 import type { ServiceType } from '@mandaito/shared';
 import type { ReactNode } from 'react';
+import type { RequestMode } from './request-dialog';
 import { useRequest } from './request-provider';
 
-/** Botón que abre el modal de solicitud con un servicio preseleccionado. */
+/** Botón que abre el formulario: en "Solicitar servicio" o "Agendar llamada". */
 export function RequestButton({
   service,
+  mode,
+  idea,
   className,
   children,
 }: {
   service?: ServiceType;
+  mode?: RequestMode;
+  idea?: string;
   className?: string;
   children: ReactNode;
 }) {
@@ -18,7 +23,7 @@ export function RequestButton({
   return (
     <button
       type="button"
-      onClick={() => openRequest(service)}
+      onClick={() => openRequest({ service, mode, idea })}
       aria-haspopup="dialog"
       className={className}
     >

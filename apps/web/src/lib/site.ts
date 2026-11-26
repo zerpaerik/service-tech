@@ -16,8 +16,8 @@ export const site = {
 export function navLinks(t: Dictionary) {
   return [
     { href: `#${t.anchors.services}`, label: t.nav.services },
+    { href: `#${t.anchors.packages}`, label: t.nav.packages },
     { href: `#${t.anchors.process}`, label: t.nav.process },
-    { href: `#${t.anchors.tech}`, label: t.nav.tech },
-    { href: `#${t.anchors.contact}`, label: t.nav.contact },
+    { href: `#${t.anchors.faq}`, label: t.nav.faq },
   ];
 }

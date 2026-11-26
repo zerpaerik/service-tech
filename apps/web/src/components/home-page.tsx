@@ -2,8 +2,12 @@ import { serviceList } from '@mandaito/shared';
 import { getDictionary, homePath, type Locale } from '@/i18n';
 import { site } from '@/lib/site';
 import { Cta } from './cta';
+import { Faq, faqStructuredData } from './faq';
 import { Hero } from './hero';
+import { MobileActionBar } from './mobile-action-bar';
+import { Packages } from './packages';
 import { Process } from './process';
+import { PromoBar } from './promo-bar';
 import { RequestProvider } from './request-provider';
 import { Services } from './services';
 import { SiteFooter } from './site-footer';
@@ -33,23 +37,31 @@ export function HomePage({ lang }: { lang: Locale }) {
 
   return (
     <RequestProvider lang={lang} copy={t.request} whatsappNumber={site.whatsappNumber}>
+      <PromoBar lang={lang} />
       <SiteHeader lang={lang} />
       <main>
         <Hero lang={lang} />
         <Services lang={lang} />
+        <Packages lang={lang} />
         <Process lang={lang} />
         <Tech lang={lang} />
+        <Faq lang={lang} />
         <Cta lang={lang} />
       </main>
-      <SiteFooter lang={lang} />
+      {/* En móviles deja espacio para la barra fija de acciones. */}
+      <div className="pb-22 md:pb-0">
+        <SiteFooter lang={lang} />
+      </div>
       <WhatsAppFloat lang={lang} />
-      <script
-        type="application/ld+json"
-        // Contenido estático generado en el servidor, sin datos del usuario.
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(structuredData).replace(/</g, '\\u003c'),
-        }}
-      />
+      <MobileActionBar lang={lang} />
+      {[structuredData, faqStructuredData(lang)].map((data) => (
+        <script
+          key={String(data['@type'])}
+          type="application/ld+json"
+          // Contenido estático generado en el servidor, sin datos del usuario.
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(data).replace(/</g, '\\u003c') }}
+        />
+      ))}
     </RequestProvider>
   );
 }

@@ -41,7 +41,7 @@ export async function submitLead(
   const lang = LOCALES.includes(requestedLang as Locale)
     ? (requestedLang as Locale)
     : DEFAULT_LOCALE;
-  const parsed = buildLeadSchema(lang).safeParse(input);
+  const parsed = buildLeadSchema(lang).safeParse({ ...input, locale: lang });
   if (!parsed.success) {
     return { ok: false, errors: toFieldErrors(parsed.error) };
   }

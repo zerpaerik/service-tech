@@ -17,7 +17,11 @@ COPY apps/web apps/web
 # Railway pasa las variables del servicio como build args al declararlas aquí.
 ARG WHATSAPP_NUMBER=""
 ARG SITE_URL=""
-ENV WHATSAPP_NUMBER=$WHATSAPP_NUMBER SITE_URL=$SITE_URL
+# Medición opcional (Google Analytics 4 y Pixel de Meta): vacías, no se carga nada.
+ARG GA_MEASUREMENT_ID=""
+ARG META_PIXEL_ID=""
+ENV WHATSAPP_NUMBER=$WHATSAPP_NUMBER SITE_URL=$SITE_URL \
+    GA_MEASUREMENT_ID=$GA_MEASUREMENT_ID META_PIXEL_ID=$META_PIXEL_ID
 RUN pnpm --filter @mandaito/shared build && pnpm --filter @mandaito/web build
 
 FROM node:24-alpine AS runtime
