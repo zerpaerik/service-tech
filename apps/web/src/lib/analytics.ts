@@ -19,7 +19,9 @@ declare global {
 export type ConversionEvent =
   | { name: 'open_form'; mode: 'request' | 'call' }
   | { name: 'lead'; kind: 'REQUEST' | 'CALL'; service: string }
-  | { name: 'whatsapp_click'; place: string };
+  | { name: 'whatsapp_click'; place: string }
+  | { name: 'email_click'; place: string }
+  | { name: 'instagram_click'; place: string };
 
 export function track(event: ConversionEvent): void {
   if (typeof window === 'undefined') return;
@@ -38,6 +40,14 @@ export function track(event: ConversionEvent): void {
       case 'whatsapp_click':
         window.gtag?.('event', 'contact_whatsapp', { place: event.place });
         window.fbq?.('track', 'Contact');
+        break;
+      case 'email_click':
+        window.gtag?.('event', 'contact_email', { place: event.place });
+        window.fbq?.('track', 'Contact');
+        break;
+      case 'instagram_click':
+        window.gtag?.('event', 'visit_instagram', { place: event.place });
+        window.fbq?.('trackCustom', 'VisitInstagram', { place: event.place });
         break;
     }
   } catch {

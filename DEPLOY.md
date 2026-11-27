@@ -23,7 +23,7 @@ La web funciona sola: el formulario abre WhatsApp con el mensaje armado, pero **
 2. No hace falta tocar _Settings_: el `railway.json` de la raíz del repo ya le indica a Railway que construya la web con `apps/web/Dockerfile`. Deja _Root Directory_ vacío.
 3. **Variables**:
    ```
-   WHATSAPP_NUMBER=584243298448
+   WHATSAPP_NUMBER=584221114369
    SITE_URL=https://${{RAILWAY_PUBLIC_DOMAIN}}
    ```
    No definas `API_INTERNAL_URL`: sin ella, la web no intenta guardar nada.
@@ -72,7 +72,7 @@ INTERNAL_API_KEY=<una cadena aleatoria larga>   # opcional, recomendado
 **Variables**
 
 ```
-WHATSAPP_NUMBER=584243298448              # código de país + número, solo dígitos
+WHATSAPP_NUMBER=584221114369              # código de país + número, solo dígitos
 SITE_URL=https://${{RAILWAY_PUBLIC_DOMAIN}}   # o tu dominio propio, ej. https://mandaito.tech
 API_INTERNAL_URL=http://${{api.RAILWAY_PRIVATE_DOMAIN}}:${{api.PORT}}
 INTERNAL_API_KEY=${{api.INTERNAL_API_KEY}}  # solo si lo definiste en el api
@@ -97,6 +97,6 @@ Healthcheck: `/api/health`.
 - **Probar las imágenes en local**:
   ```bash
   docker build -f apps/api/Dockerfile -t mandaito-api .
-  docker build -f apps/web/Dockerfile --build-arg WHATSAPP_NUMBER=584243298448 -t mandaito-web .
+  docker build -f apps/web/Dockerfile --build-arg WHATSAPP_NUMBER=584221114369 -t mandaito-web .
   ```
 - **Varias réplicas de `web`**: define `NEXT_SERVER_ACTIONS_ENCRYPTION_KEY` (la misma en todas) para que las Server Actions funcionen entre instancias.

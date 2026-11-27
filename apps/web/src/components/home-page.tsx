@@ -1,6 +1,6 @@
 import { serviceList } from '@mandaito/shared';
 import { getDictionary, homePath, type Locale } from '@/i18n';
-import { site } from '@/lib/site';
+import { instagramUrl, site } from '@/lib/site';
 import { Cta } from './cta';
 import { Faq, faqStructuredData } from './faq';
 import { Hero } from './hero';
@@ -25,6 +25,8 @@ export function HomePage({ lang }: { lang: Locale }) {
     url: `${site.url}${homePath(lang) === '/' ? '' : homePath(lang)}`,
     inLanguage: lang,
     ...(site.whatsappNumber ? { telephone: `+${site.whatsappNumber}` } : {}),
+    email: site.email,
+    sameAs: [instagramUrl],
     hasOfferCatalog: {
       '@type': 'OfferCatalog',
       name: t.meta.offerCatalog,

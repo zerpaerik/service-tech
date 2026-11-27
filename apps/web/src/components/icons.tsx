@@ -1,5 +1,44 @@
 import type { SVGProps } from 'react';
 
+/** Ícono de Instagram (trazo, hereda el color del texto). */
+export function InstagramIcon(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={2}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+      {...props}
+    >
+      <rect x="2" y="2" width="20" height="20" rx="5.5" />
+      <circle cx="12" cy="12" r="4.2" />
+      <path d="M17.6 6.4h.01" />
+    </svg>
+  );
+}
+
+/** Ícono de sobre para el correo (trazo, hereda el color del texto). */
+export function MailIcon(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={2}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+      {...props}
+    >
+      <rect x="2" y="4" width="20" height="16" rx="2.5" />
+      <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+    </svg>
+  );
+}
+
 /** Ícono de chat para WhatsApp (trazo, hereda el color del texto). */
 export function WhatsAppIcon(props: SVGProps<SVGSVGElement>) {
   return (

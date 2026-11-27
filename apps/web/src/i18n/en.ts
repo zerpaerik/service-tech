@@ -256,6 +256,10 @@ export const en: Dictionary = {
   footer: {
     tagline: 'Software, websites and digital marketing tailored to your business.',
     rights: 'All rights reserved.',
+    contact: 'Contact',
+    instagram: 'Follow us on Instagram',
+    email: 'Send us an email',
+    whatsapp: 'Message us on WhatsApp',
   },
   mobileBar: {
     label: 'Quick actions',

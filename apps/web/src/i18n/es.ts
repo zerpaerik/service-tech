@@ -282,6 +282,10 @@ export const es = {
   footer: {
     tagline: 'Software, sitios web y marketing digital a la medida de tu negocio.',
     rights: 'Todos los derechos reservados.',
+    contact: 'Contacto',
+    instagram: 'Síguenos en Instagram',
+    email: 'Escríbenos un correo',
+    whatsapp: 'Escríbenos por WhatsApp',
   },
   mobileBar: {
     label: 'Acciones rápidas',

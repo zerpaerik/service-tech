@@ -65,7 +65,13 @@ Agrega parámetros UTM para saber qué campaña trae clientes, por ejemplo `?age
 
 - al abrir el formulario: `open_form`;
 - al enviar una solicitud: `generate_lead` en GA4, y `Lead` o `Schedule` en Meta;
-- al tocar WhatsApp: `contact_whatsapp` en GA4 y `Contact` en Meta.
+- al tocar WhatsApp: `contact_whatsapp` en GA4 y `Contact` en Meta;
+- al tocar el correo: `contact_email` en GA4 y `Contact` en Meta;
+- al tocar Instagram: `visit_instagram` en GA4 y `VisitInstagram` en Meta.
+
+Los clics de contacto llevan `place`: la sección (`inicio`, `contacto`…), `footer`, `mobile-bar` o `floating`.
+
+**Contacto del pie**: correo e Instagram en `apps/web/src/lib/site.ts`.
 
 ## Desarrollo local
 
